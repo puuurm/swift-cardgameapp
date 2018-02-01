@@ -55,6 +55,8 @@ class TableauPilesView: UIStackView {
     }
 
     func pop(index: Int, previousCard: Card?) {
+        guard let lastTableau = subviews.last else { return }
+        self.insertSubview(lastTableau, at: index)
         let tableauView = subviews[index] as? TableauView
         tableauView?.popCardStackView(previousCard: previousCard)
     }
@@ -62,6 +64,7 @@ class TableauPilesView: UIStackView {
 }
 
 extension TableauPilesView: MovableStartView {
+
     // 점이 속한 뷰의 스택 인덱스, 카드 인덱스 반환
     func position(_ point: CGPoint) -> Position? {
         let tableauPilesViewFrame = self.frame
@@ -81,7 +84,11 @@ extension TableauPilesView: MovableStartView {
     // 특정 스택 인덱스, 카드 인덱스에 해당되는 카드 뷰 반환
     func selectedView(_ position: Position) -> CardView? {
         let tableauView = subviews[position.stackIndex] as? TableauView
-        return tableauView?.selectedCardView(index: position.cardIndex)
+        guard let selectedView = tableauView?.selectedCardView(index: position.cardIndex) else {
+            return nil
+        }
+        self.bringSubview(toFront: subviews[position.stackIndex])
+        return selectedView
     }
 
     // 특정 스택 인덱스, 카드 인덱스를 비롯한 아래에 위치한 카드 뷰 배열 반환

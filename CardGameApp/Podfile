@@ -5,6 +5,7 @@ target 'CardGameApp' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod ’SwiftLint’
+
   # Pods for CardGameApp
 
   target 'CardGameAppTests' do
