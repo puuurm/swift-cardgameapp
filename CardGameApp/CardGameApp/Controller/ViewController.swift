@@ -24,10 +24,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.view.subviews.index(of: foundationPilesView))
-        print(self.view.subviews.index(of: tableauPilesView))
-        print(self.view.subviews.index(of: wasteView))
-        print(self.view.subviews.index(of: stockView))
         initProperties()
         initViews()
         initBackGroundImage()
@@ -210,9 +206,9 @@ extension ViewController {
                 cardView.frame.origin.y += move.y
 
         },
-            completion: { _ in
+            completion: { [weak self] _ in
                 (startView as? TableauPilesView)?.insertLastSubview(at: currentPos.stackIndex)
-                self.moveCardViews(view: startView, tappedView: cardView, startIndex: currentPos.stackIndex)
+                self?.moveCardViews(view: startView, tappedView: cardView, startIndex: currentPos.stackIndex)
         })
     }
 
