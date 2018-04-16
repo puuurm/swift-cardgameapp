@@ -49,11 +49,20 @@ struct DragInfo {
     func dragViews(_ gesture: UIPanGestureRecognizer) {
         self.changes.forEach {
             let translation = gesture.translation(in: self.baseView)
-            $0.center = CGPoint(
-                x: $0.center.x + translation.x,
-                y: $0.center.y + translation.y)
+            $0.center = CGPoint(x: $0.center.x + translation.x, y: $0.center.y + translation.y)
         }
         gesture.setTranslation(CGPoint.zero, in: self.baseView)
+    }
+
+    func isOutOfBound() -> Bool {
+        guard let startPos = startPos,
+            let chageView = self.changes.first else { return false }
+        let idx = startPos.cardIndex
+
+        if chageView.frame.minX > 0 && Size.cardWidth * idx.cgfloat + Size.spacing * (idx+1).cgfloat + chageView.frame.minX > baseView.frame.width {
+            return true
+        }
+        return false
     }
 
     func backToViewPriority() {
@@ -66,6 +75,7 @@ struct DragInfo {
             startview.insertLastSubview(at: startPos.stackIndex)
         }
     }
+
     func backToStartState() {
         var i = 0
         self.changes.forEach {
